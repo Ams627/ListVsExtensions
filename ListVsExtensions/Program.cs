@@ -44,12 +44,12 @@ namespace ListVsExtensions
                             throw new ApplicationException("Specified file is not a well-formed software registry hive: " + hivefile);
                         }
 
-                        //var extensions = extensionsKey.GetValueNames().Select(x=>x.Split(',').FirstOrDefault());
-                        //foreach (var extGuid in extensions)
-                        //{
-                        //    var value = extensionsKey.GetValue(extGuid);
-                        //    Console.WriteLine($"extension:{extGuid}: {value}");
-                        //}
+                        var allExtensions = extensionsKey.GetValueNames().Select(x=>x.Split(',').FirstOrDefault());
+                        foreach (var extGuid in allExtensions)
+                        {
+                            var value = extensionsKey.GetValue(extGuid);
+                            Console.WriteLine($"extension:{extGuid}: {value}");
+                        }
                     }
                 }
             }
