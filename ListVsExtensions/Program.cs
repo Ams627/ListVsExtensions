@@ -18,7 +18,8 @@ namespace ListVsExtensions
                 var config = new VS2017Info.Vs2017SetupConfig();
                 foreach (var instance in config.VSInstances)
                 {
-                    Console.WriteLine($"{instance.Id}");
+                    Console.WriteLine($"instance ID:{instance.Id}");
+                    Console.WriteLine($"installed path:{instance.InstalledPath}");
                     var vsPath = VS2017Info.VS2017AppData.GetLocalAppDataPath(instance.Version, instance.Id);
                     Console.WriteLine($"local appdata path is {vsPath}");
 

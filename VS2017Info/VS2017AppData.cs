@@ -25,12 +25,12 @@ namespace VS2017Info
         /// <returns>The localappdata path for the instance</returns>
         public static string GetLocalAppDataPath(string version, string instanceID)
         {
-            const string pattern = @"^[0-9][0-9]?\.[0-9]+";
+            const string pattern = @"^[0-9][0-9]";
             var match = Regex.Match(version, pattern);
-            var keyVersion = match.Success ? version.Substring(match.Index, match.Length) : "15.0";
+            var keyVersion = match.Success ? version.Substring(match.Index, match.Length) + ".0" : "15.0";
 
             keyVersion += "_" + instanceID;
-            var vsAppDataPath = Path.Combine(_localAppDataPath, "Microsoft/visualstudio", keyVersion);
+            var vsAppDataPath = Path.Combine(_localAppDataPath, @"Microsoft\visualstudio", keyVersion);
             return vsAppDataPath;
         }
 
