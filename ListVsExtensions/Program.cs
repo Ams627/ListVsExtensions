@@ -30,35 +30,35 @@ namespace ListVsExtensions
                     }
 
 
-                    var hivefile = VS2017Info.VS2017AppData.GetPrivateRegFilename(instance.Version, instance.Id);
-                    var hKey = RegistryNativeMethods.RegLoadAppKey(hivefile);
+                    //var hivefile = VS2017Info.VS2017AppData.GetPrivateRegFilename(instance.Version, instance.Id);
+                    //var hKey = RegistryNativeMethods.RegLoadAppKey(hivefile);
 
-                    var keyVersion = VS2017Info.VS2017AppData.GetVersionForRegistryKey(instance.Version, instance.Id);
+                    //var keyVersion = VS2017Info.VS2017AppData.GetVersionForRegistryKey(instance.Version, instance.Id);
 
-                    var keypath = $@"Software\Microsoft\VisualStudio\{keyVersion}\ExtensionManager\EnabledExtensions";
-                    using (var safeRegistryHandle = new SafeRegistryHandle(new IntPtr(hKey), true))
-                    using (var appKey = RegistryKey.FromHandle(safeRegistryHandle))
-                    using (var extensionsKey = appKey.OpenSubKey(keypath, true))
-                    {
-                        if (extensionsKey == null)
-                        {
-                            throw new ApplicationException("Specified file is not a well-formed software registry hive: " + hivefile);
-                        }
+                    //var keypath = $@"Software\Microsoft\VisualStudio\{keyVersion}\ExtensionManager\EnabledExtensions";
+                    //using (var safeRegistryHandle = new SafeRegistryHandle(new IntPtr(hKey), true))
+                    //using (var appKey = RegistryKey.FromHandle(safeRegistryHandle))
+                    //using (var extensionsKey = appKey.OpenSubKey(keypath, true))
+                    //{
+                    //    if (extensionsKey == null)
+                    //    {
+                    //        throw new ApplicationException("Specified file is not a well-formed software registry hive: " + hivefile);
+                    //    }
 
-                        var allExtensions = extensionsKey.GetValueNames().Select(x=>x.Split(',').FirstOrDefault());
-                        foreach (var extGuid in allExtensions)
-                        {
-                            var value = extensionsKey.GetValue(extGuid);
-                            Console.WriteLine($"extension:{extGuid}: {value}");
-                        }
-                    }
+                    //    var allExtensions = extensionsKey.GetValueNames().Select(x=>x.Split(',').FirstOrDefault());
+                    //    foreach (var extGuid in allExtensions)
+                    //    {
+                    //        var value = extensionsKey.GetValue(extGuid);
+                    //        Console.WriteLine($"extension:{extGuid}: {value}");
+                    //    }
+                    //}
                 }
             }
             catch (Exception ex)
             {
                 var codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
                 var progname = Path.GetFileNameWithoutExtension(codeBase);
-                Console.Error.WriteLine(progname + ": Error: " + ex.Message);
+                Console.Error.WriteLine(progname + ": Error: " + ex.ToString());
             }
         }
     }

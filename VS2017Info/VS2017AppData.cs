@@ -42,9 +42,9 @@ namespace VS2017Info
         /// <returns></returns>
         public static string GetVersionForRegistryKey(string version, string instanceID)
         {
-            const string pattern = @"^[0-9][0-9]?\.[0-9]+";
+            const string pattern = @"^[0-9][0-9]";
             var match = Regex.Match(version, pattern);
-            var keyVersion = match.Success ? version.Substring(match.Index, match.Length) : "15.0";
+            var keyVersion = match.Success ? version.Substring(match.Index, match.Length) + ".0" : "15.0";
 
             keyVersion += "_" + instanceID;
             return keyVersion;
@@ -72,12 +72,11 @@ namespace VS2017Info
             using (var appKey = RegistryKey.FromHandle(safeRegistryHandle))
             using (var extensionsKey = appKey.OpenSubKey(keypath, true))
             {
-                if (extensionsKey == null)
-                {
-                    throw new ApplicationException("Specified file is not a well-formed software registry hive: " + hivefile);
-                }
+                // get a list of key-value pairs - use the value names to get the values
+                result = extensionsKey == null ? result :
+                    extensionsKey.GetValueNames().Select(x => new KeyValuePair<string, string>(x, extensionsKey.GetValue(x).ToString())).ToList();
 
-                var extensions = extensionsKey.GetValueNames();
+                var extensions = extensionsKey?.GetValueNames() ?? Enumerable.Empty<string>();
                 foreach (var key in extensions)
                 {
                     var value = extensionsKey.GetValue(key).ToString();
